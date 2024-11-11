@@ -35,10 +35,31 @@ def changing_names(choice):
                 count = print("\nReEnter the number from where the index should start :")        
             else:
                 break
-        for i in file_names:
-            type = i.split('.')[-1]
-            os.rename(folder_changed + "/" + i,folder_changed + "/" + name +"_"+ str(count) + "." + type)
-            count = count + 1 
+
+
+        # Check if the user has not entered any name for the file (basename). 
+        # Use: When the user wants only sequentially to number the files without a basename
+        # Example: 21.jpg, 22.jpg, 23.jpg...
+        if (name == ""):
+            for i in file_names:
+                type = i.split('.')[-1]
+                
+                # Exclude underscore in filenames since it follows the use case at line no 41; illustrated at line no 42.
+                os.rename(folder_changed + "/" + i,folder_changed + "/" + str(count) + "." + type)
+                count = count + 1
+        
+        # Check if the user has entered the name for the file (basename). 
+        # Use: When the user wants to follow a format for the filename,
+        #       `[basename]_[sequenceNumber].[extension]` - A basename followed by its corresponding sequence number & identical extension
+        # Example: img_21.jpg, img_22.jpg, img_23.jpg...
+        else:
+            for i in file_names:
+                type = i.split('.')[-1]
+
+                # Include underscore between basename and sequence number for differentiation
+                os.rename(folder_changed + "/" + i,folder_changed + "/" + name +"_"+ str(count) + "." + type)
+                count = count + 1
+                
         print("Successfully changed")
     else:
         print("Filenames not changed")
